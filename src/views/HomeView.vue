@@ -101,6 +101,12 @@
         </ul>
       </div>
     </div>
+
+    <div>
+      <h1>Sorted Numbers and Frequencies</h1>
+      <p>Input: [2, 3, 4, 4, 34, 6, 7, 2, 3, 7, 8, 8, 8, 7, 9, 10, 41, 8]</p>
+      <p>Output: {{ sortedNumbers }}</p>
+    </div>
   </div>
 </template>
 
@@ -113,11 +119,48 @@ export default {
     MachineStatus,
   },
 
+  data() {
+    return {
+      inputNumbers: [2, 3, 4, 4, 34, 6, 7, 2, 3, 7, 8, 8, 8, 7, 9, 10, 41, 8],
+      employees: [
+        { name: "Arm", position: "Front End" },
+        { name: "Game", position: "Back End" },
+      ],
+    };
+  },
+
   computed: {
+    sortedNumbers() {
+      return this.sortNumbersAndFrequencies(this.inputNumbers);
+    },
     machines() {
       return this.$store.state.machines;
     },
   },
+
+  methods: {
+    sortNumbersAndFrequencies(input) {
+      const frequencyMap = {};
+      input.forEach((num) => {
+        frequencyMap[num] = (frequencyMap[num] || 0) + 1;
+      });
+
+      const sortedNumbers = Object.keys(frequencyMap)
+        .sort((a, b) => parseInt(a, 10) - parseInt(b, 10))
+        .map(Number);
+
+      const result = [];
+      sortedNumbers.forEach((num) => {
+        const frequency = frequencyMap[num];
+        for (let i = 0; i < frequency; i++) {
+          result.push(num);
+        }
+      });
+
+      return result;
+    },
+  },
+
   created() {
     // You may want to dispatch an action to initialize the state here
   },
